@@ -1,5 +1,11 @@
 import { api } from "../api";
-import { DOMAIN, EXCLUDE_REBLOGS, EXCLUDE_REPLIES } from "../config";
+import {
+  DOMAIN,
+  EXCLUDE_REBLOGS,
+  EXCLUDE_REPLIES,
+  MAX_ID,
+  MIN_ID,
+} from "../config";
 import { Account, Post, Requestor } from "../interfaces";
 
 export class MastodonRequestor implements Requestor<Account, Post> {
@@ -11,12 +17,20 @@ export class MastodonRequestor implements Requestor<Account, Post> {
 
   async fetchPostsByAccountId(accountId: string) {
     const url = `https://${DOMAIN}/api/v1/accounts/${accountId}/statuses`;
-    const res = await api().get<Post[]>(url, {
-      params: {
-        exclude_reblogs: EXCLUDE_REBLOGS,
-        exclude_replies: EXCLUDE_REPLIES,
-      },
-    });
+    const params: { [key: string]: any } = {
+      exclude_reblogs: EXCLUDE_REBLOGS,
+      exclude_replies: EXCLUDE_REPLIES,
+    };
+
+    if (MIN_ID !== "") {
+      params["min_id"] = MIN_ID;
+    }
+
+    if (MAX_ID !== "") {
+      params["max_id"] = MAX_ID;
+    }
+
+    const res = await api().get<Post[]>(url, { params });
     return res.data;
   }
 
