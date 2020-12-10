@@ -1,5 +1,5 @@
 import { api } from "../api";
-import { DOMAIN } from "../config";
+import { DOMAIN, EXCLUDE_REBLOGS, EXCLUDE_REPLIES } from "../config";
 import { Account, Post, Requestor } from "../interfaces";
 
 export class MastodonRequestor implements Requestor<Account, Post> {
@@ -13,8 +13,8 @@ export class MastodonRequestor implements Requestor<Account, Post> {
     const url = `https://${DOMAIN}/api/v1/accounts/${accountId}/statuses`;
     const res = await api().get<Post[]>(url, {
       params: {
-        exclude_reblogs: true,
-        exclude_replies: true,
+        exclude_reblogs: EXCLUDE_REBLOGS,
+        exclude_replies: EXCLUDE_REPLIES,
       },
     });
     return res.data;
