@@ -68,7 +68,22 @@ const main = async () => {
 
           await sleep(delay + 1000);
           continue;
-        } else if (e.response.status === 404) {
+        } else if (
+          e.response.status === 502 ||
+          e.response.status === 503 ||
+          e.response.status === 504
+        ) {
+          // とりあえず待ってから再試行する
+          const now = new Date();
+          const reset = new Date();
+          reset.setMinutes(reset.getMinutes() + 1);
+          const delay = reset.getTime() - now.getTime();
+
+          log(`エラー応答(${e.response.status})`);
+          log(`処理再開予定日時: ${reset}`);
+
+          await sleep(delay + 1000);
+        } else if (e.response.status === 404 || e.response.status === 410) {
           log("削除完了");
           return;
         }
