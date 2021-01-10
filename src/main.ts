@@ -83,6 +83,7 @@ const main = async () => {
           log(`処理再開予定日時: ${reset}`);
 
           await sleep(delay + 1000);
+          continue;
         } else if (e.response.status === 404 || e.response.status === 410) {
           log("削除完了");
           return;
