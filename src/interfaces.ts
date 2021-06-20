@@ -6,6 +6,9 @@ export interface Post {
   id: string;
   reblog?: Post | null;
   content: string;
+  uri: string;
+  visibility: string;
+  created_at: string;
 }
 
 export interface Requestor<AT, PT> {

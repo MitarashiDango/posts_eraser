@@ -22,6 +22,9 @@ const mainProc = async (
       }
 
       log(`Post ID: ${post.id}`);
+      log(`URI: ${post.uri}`);
+      log(`Created at: ${post.created_at}`);
+      log(`Visibility: ${post.visibility}`);
 
       if (post.reblog) {
         // ブースト解除
