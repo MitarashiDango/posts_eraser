@@ -55,7 +55,7 @@ const main = async () => {
     try {
       await mainProc(account, requestor);
       return;
-    } catch (e) {
+    } catch (e: any) {
       if (e.response && typeof e.response.status !== "undefined") {
         if (isRateLimitExceeded(e.response)) {
           // API呼出回数上限に到達した場合は、制限がリセットされるまで待つ
@@ -95,7 +95,7 @@ const main = async () => {
 
       log("回復不能なエラーが発生");
       if (e.response) {
-        console.log(e);
+        console.error(e);
         throw new Error(
           `status: ${e.response.status}; reason: ${e.response.statusText}`
         );
@@ -108,6 +108,6 @@ const main = async () => {
 
 try {
   main();
-} catch (e) {
+} catch (e: any) {
   log(e);
 }
